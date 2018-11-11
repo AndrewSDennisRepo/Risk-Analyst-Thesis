@@ -9,7 +9,7 @@ For sentiment analysis originally was an LSTM utilizing crowdsourced truth data.
 
 ### Dictionary - Lexicon 
 Loughran-McDonald Sentiment Word Lists was used instead to determine sentiment specifically Negative, Positive, and Uncertainty
-(https://sraf.nd.edu/textual-analysis/ "Dictionary / Lexicon")
+[Dictionary / Lexicon by Loughran-McDonald] (https://sraf.nd.edu/textual-analysis/)
 
 ## Results
 Random Forest was able to classify with ~77% precision with all variables. (please see charts folder for more) 
