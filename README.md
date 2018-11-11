@@ -14,4 +14,5 @@ Loughran-McDonald Sentiment Word Lists was used instead to determine sentiment s
 ## Results
 Random Forest was able to classify with ~77% precision with all variables. 
 ![Results](https://github.com/syphercrypt/Risk-Analyst-Thesis/blob/master/charts/all_vars.JPG "All Variables")
+
 (please see charts folder for more information) 
