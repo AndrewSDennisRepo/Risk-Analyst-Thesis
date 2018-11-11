@@ -1,0 +1,39 @@
+
+import numpy as np
+import pandas as pd
+import re
+
+from sentiment import *
+
+df = pd.read_csv(r'D:\MS Data Science Files\Thesis\model_data.csv')
+
+
+def neg_count(phrase):
+	neg_count= 0
+	for word in re.split(' ',phrase):
+		if word.lower() in negative:
+			neg_count = neg_count - 1
+	return neg_count
+
+
+def pos_count(phrase):
+	pos_count= 0
+	for word in re.split(' ',phrase):
+		if word.lower() in positive:
+			pos_count = pos_count + 1
+	return pos_count
+
+def unc_count(phrase):
+	unc_count= 0
+	for word in re.split(' ',phrase):
+		if word.lower() in uncertainty:
+			unc_count = unc_count + 1
+	return unc_count
+
+df['NEG'] = df['tokenized'].apply(neg_count)
+df['POS'] = df['tokenized'].apply(pos_count)
+df['UNC'] = df['tokenized'].apply(unc_count)
+
+
+print df.head()
+# df.to_csv('D:\\MS Data Science Files\\Thesis\\classified_data.csv')
