@@ -5,8 +5,10 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
-from sklearn.svm import SVC  
+from sklearn.svm import SVC 
+from sklearn import svm, linear_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.linear_model import RidgeClassifier
 import xgboost as xgb
 
 import matplotlib.pyplot as plt
@@ -43,21 +45,21 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, shuffl
 
 
 """Random Forrest"""
-regressor = RandomForestClassifier(n_estimators=200, random_state=42)  
-regressor.fit(X_train, y_train)  
-y_pred = regressor.predict(X_test) 
+rf = RandomForestClassifier(n_estimators=200, random_state=42)  
+rf.fit(X_train, y_train)  
+y_pred = rf.predict(X_test) 
 
 
 """Random Forrest Results"""
 print(confusion_matrix(y_test,y_pred.round()))
 print(' ')  
-print('Results    ')
+print('Results Random Forest   ')
 print(classification_report(y_test,y_pred.round()))  
 print('Accuracy %:' , accuracy_score(y_test, y_pred.round())*100)  
 
 
 """Forest Features"""
-importances = dict(zip(X_train.columns, regressor.feature_importances_))
+importances = dict(zip(X_train.columns, rf.feature_importances_))
 
 imp_df = pd.DataFrame(importances.items(), columns=['variable','importance'])
 
@@ -67,6 +69,33 @@ df_importances['importance'] = df_importances['importance'].astype(float)
 imp= sns.barplot(x= 'variable',y= 'importance', data= df_importances, palette= 'Blues_d')
 imp.set_xticklabels(imp.get_xticklabels(), rotation= 30)
 plt.show()
+
+
+"""Support Vector Machine"""
+rbf_svc = svm.SVC(kernel='rbf')
+rbf_svc.fit(X_train, y_train)  
+y_pred_rbf = rbf_svc.predict(X_test) 
+
+"""SVM Results"""
+print(confusion_matrix(y_test,y_pred_rbf.round()))
+print(' ')  
+print('Results SVM  ')
+print(classification_report(y_test,y_pred_rbf.round()))  
+print('Accuracy %:' , accuracy_score(y_test, y_pred_rbf.round())*100) 
+
+
+"""Ridge Classification"""
+ridge = RidgeClassifier(solver='auto')
+ridge.fit(X_train, y_train)
+y_pred_ridge = ridge.predict(X_test)
+
+"""Ridge Results"""
+print(confusion_matrix(y_test,y_pred_ridge.round()))
+print(' ')  
+print('Results Ridge  ')
+print(classification_report(y_test,y_pred_ridge.round()))  
+print('Accuracy %:' , accuracy_score(y_test, y_pred_ridge.round())*100) 
+
 
 
 """Visualization of Data"""
@@ -87,7 +116,7 @@ plt.show()
 
 
 """Calculate the fpr and tpr for all thresholds of the classification."""
-probs = regressor.predict_proba(X_test)
+probs = rf.predict_proba(X_test)
 preds = probs[:,1]
 fpr, tpr, threshold = metrics.roc_curve(y_test, preds)
 roc_auc = metrics.auc(fpr, tpr)
