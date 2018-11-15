@@ -68,6 +68,7 @@ df_importances['importance'] = df_importances['importance'].astype(float)
 
 imp= sns.barplot(x= 'variable',y= 'importance', data= df_importances, palette= 'Blues_d')
 imp.set_xticklabels(imp.get_xticklabels(), rotation= 30)
+plt.title("Random Forest Important Variables")
 plt.show()
 
 
@@ -112,6 +113,7 @@ ax.scatter(X,Y, Z, c= 'r', marker= '+')
 ax.set_xlabel('Sales Beat')
 ax.set_ylabel('EPS Beat')
 ax.set_zlabel('Mean Positivity')
+plt.title("3D Scatter of Top 3 Importances")
 plt.show()
 
 
