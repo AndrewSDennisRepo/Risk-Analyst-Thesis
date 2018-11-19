@@ -19,3 +19,8 @@ def group_main(df1, df2):
 	df_joined = df_report_date.append(df_next_date)
 	df_clean = df_joined.dropna()
 	return df_clean
+
+# df1 = data()
+
+# print(len(data))
+earn_df = pd.read_csv('D:\\MS Data Science Files\\Thesis\\earnings_data.csv')

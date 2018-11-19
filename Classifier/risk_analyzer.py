@@ -9,6 +9,7 @@ from sklearn.svm import SVC
 from sklearn import svm, linear_model
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.linear_model import RidgeClassifier
+from sklearn.linear_model import LogisticRegression
 import xgboost as xgb
 
 import matplotlib.pyplot as plt
@@ -21,9 +22,15 @@ from group_data import data, group_main
 df_sent = data()
 earn_df = pd.read_csv('D:\\MS Data Science Files\\Thesis\\earnings_data.csv')
 
+
+
 df= group_main(df_sent, earn_df)
 
-df.to_csv('D:\\MS Data Science Files\\Thesis\\final_df.csv')
+print(len(df))
+
+
+# df.to_csv('D:\\MS Data Science Files\\Thesis\\final_df.csv')
+
 
 
 X = df[[
@@ -42,6 +49,20 @@ y = df[['risk']]
 
 """Split data for testing algorithms""" 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2, shuffle= True)  
+
+
+"""Logistic Classification"""
+logist = LogisticRegression()
+logist.fit(X_train, y_train)
+y_pred_logist = logist.predict(X_test)
+
+"""Logistic Results"""
+print(confusion_matrix(y_test,y_pred_logist.round()))
+print(' ')  
+print('Logistic Regression Results  ')
+print(classification_report(y_test,y_pred_logist.round()))  
+print('Accuracy %:' , accuracy_score(y_test, y_pred_logist.round())*100) 
+
 
 
 """Random Forrest"""
@@ -64,6 +85,7 @@ importances = dict(zip(X_train.columns, rf.feature_importances_))
 imp_df = pd.DataFrame(importances.items(), columns=['variable','importance'])
 
 df_importances = imp_df.sort_values(by=['importance'], ascending=False)
+print(df_importances)
 df_importances['importance'] = df_importances['importance'].astype(float)
 
 imp= sns.barplot(x= 'variable',y= 'importance', data= df_importances, palette= 'Blues_d')
@@ -134,3 +156,4 @@ plt.ylim([0, 1])
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.show()
+
